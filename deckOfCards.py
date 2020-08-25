@@ -24,6 +24,7 @@ class card:
 class deckOfCards(card):
     def __init__(self,numOfDecks):
         self.deck=[]
+        self.usedCards=[]
         suits=["clubs","diamonds","hearts","spades"]
         count=0
         while(count<numOfDecks):
@@ -52,6 +53,18 @@ class deckOfCards(card):
                 tempStr+="\n"+str(card.cardNum)+" of "+str(card.suit)
         return tempStr
     
+    def useCard(self,card):
+        self.usedCards.append(card)
+        self.deck.remove(card)
+    
+    def addCard(self,card):
+        self.deck.append(card)
+    
+    def refreshDeck(self):
+        for card in self.usedCards:
+            deckOfCards.addCard(self,card)
+        self.usedCards=[]
+
     def numberOfCards(self):
         numOfCards=0
         for card in self.deck:

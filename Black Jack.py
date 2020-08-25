@@ -1,12 +1,18 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Apr  8 16:19:45 2019
-
-@author: patma
-"""
 from random import randint
 from deckOfCards import deckOfCards
+class player:
+    def __init_(self,playerName,playerHand):
+        self.playerName=playerName
+        self.playerHand=playerHand
+    
+    def __init__(self,playerName):
+        self.playerName=playerName
+        self.playerHand=[]
 
+    def __str__(self):
+        print("{} has a hand of: ".format(self.playerName))
+        for card in self.playerHand:
+            print(card+" ")
 
 class gameInstance:
     def __init__(self,numOfPlayers,playerList,numOfDecks,deck):
@@ -25,7 +31,7 @@ def whoGoesFirst(playerList):
     for i in range(len(playerList)):
         while(True):
             try:
-                num=int(input("{} pick a number between 1 and 100: ".format(str(playerList[i]))))
+                num=int(input("{} pick a number between 1 and 100: ".format(str(playerList[i].playerName))))
             except ValueError:
                 print("Please enter an integer ex: 1,2,3...")
             else:
@@ -33,19 +39,17 @@ def whoGoesFirst(playerList):
                     print("Number must be between 1 and 100")
                 else:
                     break
-        playerDict[playerList[i]]= abs(randomNum-num)
+        playerDict[playerList[i].playerName]= abs(randomNum-num)
 
         
     orderedPlayers=[]
     while(len(playerList)!=1):
         smallestGuessIndex=0 
         for i in range(len(playerList)-1):
-            playerName1=playerList[i]
-            playerName2=playerList[i+1]
+            playerName1=playerList[smallestGuessIndex].playerName
+            playerName2=playerList[i].playerName
             if playerDict[playerName1]>playerDict[playerName2]:
                 smallestGuessIndex=i+1
-            else:
-                smallestGuessIndex=i
         orderedPlayers.append(playerList[smallestGuessIndex])
         del playerList[smallestGuessIndex]
     
@@ -53,13 +57,13 @@ def whoGoesFirst(playerList):
     del playerList[0]    
     for i in range(len(orderedPlayers)):
         if(i==0):
-            print("{} goes {}".format(str(orderedPlayers[i]),"1st"))
+            print("{} goes {}".format(str(orderedPlayers[i].playerName),"1st"))
         elif(i==1):
-            print("{} goes {}".format(str(orderedPlayers[i]),"2nd"))
+            print("{} goes {}".format(str(orderedPlayers[i].playerName),"2nd"))
         elif(i==2):
-            print("{} goes {}".format(str(orderedPlayers[i]),"3rd"))
+            print("{} goes {}".format(str(orderedPlayers[i].playerName),"3rd"))
         else:
-            print("{} goes {}".format(str(orderedPlayers[i]),str(i+1)+"th"))
+            print("{} goes {}".format(str(orderedPlayers[i].playerName),str(i+1)+"th"))
         
     print("The random number was: "+str(randomNum))
     return(orderedPlayers)
@@ -85,7 +89,7 @@ def setUpGame():
     #Gets player names
     for i in range(int(numOfPlayers)):
         playerName=input("Enter player {}'s name: ".format(str(i+1)))
-        playerList.append(playerName)
+        playerList.append(player(playerName))
     
     ##Determins what player will go first, second, etc.
     if(int(numOfPlayers)>1):
@@ -100,7 +104,8 @@ def setUpGame():
                 response=response.upper()
         if (response=="YES"):
             playerList=whoGoesFirst(playerList)
-            
+
+       
     ##Gets number of decks
     while(True):
         try:
@@ -116,8 +121,21 @@ def setUpGame():
     deck = deckOfCards(numOfDecks)
     game = gameInstance(numOfPlayers,playerList,numOfDecks,deck)
     return game
-    
+
+def dealCards(game):
+    for player in game.playerList:
+        player.hand.append()
+
+def blackJackRun(game):
+    dealerName="Dealer"
+    dealer= player(dealerName)
+
+    winner=False
+    while(not winner):
+        for player in game.playerList:
+            print("")
 def main():
+    print("Setting Up Game")
     game=setUpGame()
-    print(game.playerList)
+    print("Game Set Up")
 main()        
