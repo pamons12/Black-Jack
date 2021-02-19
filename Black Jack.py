@@ -1,6 +1,6 @@
 from random import randint
 from deckOfCards import deckOfCards
-from player import player
+from player import player,players
 
 class gameInstance:
     def __init__(self,numOfPlayers,playerList,numOfDecks,deck):
@@ -11,51 +11,7 @@ class gameInstance:
         
     def __str__(self):
         print("Number of players: {}\nNumber of decks: {}".format(self.numOfPlayers,self.numOfDecks))
-        
-def whoGoesFirst(playerList):
-    playerDict={}
-    randomNum=randint(1,100)
-    
-    for i in range(len(playerList)):
-        while(True):
-            try:
-                num=int(input("{} pick a number between 1 and 100: ".format(str(playerList[i].playerName))))
-            except ValueError:
-                print("Please enter an integer ex: 1,2,3...")
-            else:
-                if num<=0 or num>100:
-                    print("Number must be between 1 and 100")
-                else:
-                    break
-        playerDict[playerList[i].playerName]= abs(randomNum-num)
-
-        
-    orderedPlayers=[]
-    while(len(playerList)!=1):
-        smallestGuessIndex=0 
-        for i in range(len(playerList)-1):
-            playerName1=playerList[smallestGuessIndex].playerName
-            playerName2=playerList[i].playerName
-            if playerDict[playerName1]>playerDict[playerName2]:
-                smallestGuessIndex=i+1
-        orderedPlayers.append(playerList[smallestGuessIndex])
-        del playerList[smallestGuessIndex]
-    
-    orderedPlayers.append(playerList[0])
-    del playerList[0]    
-    for i in range(len(orderedPlayers)):
-        if(i==0):
-            print("{} goes {}".format(str(orderedPlayers[i].playerName),"1st"))
-        elif(i==1):
-            print("{} goes {}".format(str(orderedPlayers[i].playerName),"2nd"))
-        elif(i==2):
-            print("{} goes {}".format(str(orderedPlayers[i].playerName),"3rd"))
-        else:
-            print("{} goes {}".format(str(orderedPlayers[i].playerName),str(i+1)+"th"))
-        
-    print("The random number was: "+str(randomNum))
-    return(orderedPlayers)
-                
+              
 
 def setUpGame():
     
@@ -72,12 +28,12 @@ def setUpGame():
                 print("Number of players must be greater than 0")
             else:
                 break
-            
-    playerList=[]
+    
+    playersObj=players()
     #Gets player names
     for i in range(int(numOfPlayers)):
         playerName=input("Enter player {}'s name: ".format(str(i+1)))
-        playerList.append(player(playerName))
+        playersObj.playerList.append(player(playerName))
     
     ##Determins what player will go first, second, etc.
     if(int(numOfPlayers)>1):
@@ -91,7 +47,7 @@ def setUpGame():
                 response=input("Response not valid, answer with yes or no: ")
                 response=response.upper()
         if (response=="YES"):
-            playerList=whoGoesFirst(playerList)
+            playersObj.randomizePlayerOrder()
 
        
     ##Gets number of decks
@@ -107,7 +63,7 @@ def setUpGame():
                 break
     
     deck = deckOfCards(numOfDecks)
-    game = gameInstance(numOfPlayers,playerList,numOfDecks,deck)
+    game = gameInstance(numOfPlayers,playersObj.playerList,numOfDecks,deck)
     return game
 
 def main():
