@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May  7 12:41:59 2019
-
-@author: patma
-"""
 class card:
     def __init__(self,suit,cardNum):
         self.cardNum=cardNum
@@ -32,6 +26,7 @@ class deckOfCards(card):
                 for j in range(13):
                     self.deck.append(card(suits[i],j+1))
             count+=1
+    
     def __repr__(self):
         tempStr=""
         for i in range(len(self.deck)):
@@ -66,7 +61,4 @@ class deckOfCards(card):
         self.usedCards=[]
 
     def numberOfCards(self):
-        numOfCards=0
-        for card in self.deck:
-            numOfCards+=1
-        return numOfCards
+        return len(self.deck)
